@@ -3,6 +3,8 @@ import { useState } from 'react'
 import PriceRangeFrequencyToolbar from './PriceRangeFrequencyToolbar'
 import PriceRangeFrequencyTable from './PriceRangeFrequencyTable'
 import { formatPriceRangeFrequencyRows } from '@/utils/formatPriceRangeFrequencyRows'
+import { useQuery } from '@tanstack/react-query'
+import { getPurchaseFrequency } from '../apis/getPurchaseFrequency'
 
 function PriceRangeFrequencySection() {
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
@@ -19,13 +21,15 @@ function PriceRangeFrequencySection() {
 
   const handleDownloadCsv = () => {}
 
-  const dummy = [
-    { range: '0 - 20000', count: 150 },
-    { range: '20001 - 30000', count: 120 },
-    { range: '100001 - Infinity', count: 120 },
-  ]
-
-  const rows = formatPriceRangeFrequencyRows(dummy)
+  const { data } = useQuery({
+    queryKey: ['purchase-frequency', dateRange.start, dateRange.end ?? dateRange.start],
+    queryFn: () =>
+      getPurchaseFrequency({
+        from: dateRange.start,
+        to: dateRange.end === '' ? dateRange.start : dateRange.end,
+      }),
+    enabled: Boolean(dateRange.start),
+  })
 
   return (
     <S_Container>
@@ -36,11 +40,10 @@ function PriceRangeFrequencySection() {
         onReset={handleReset}
         onDownloadCsv={handleDownloadCsv}
       />
-      <PriceRangeFrequencyTable rows={rows} />
+      <PriceRangeFrequencyTable rows={data ? formatPriceRangeFrequencyRows(data) : []} />
     </S_Container>
   )
 }
 
 export default PriceRangeFrequencySection
-
 const S_Container = styled.section``
