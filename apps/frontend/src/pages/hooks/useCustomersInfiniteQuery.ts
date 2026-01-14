@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { CustomerListResponse, getCustomers, SortBy } from '../dashboard/apis/getCustomers'
+import { getCustomers, SortBy } from '../dashboard/apis/getCustomers'
 
 export interface UseCustomersInfiniteQueryParams {
   sortBy?: SortBy
@@ -10,7 +10,7 @@ export interface UseCustomersInfiniteQueryParams {
 }
 
 export function useCustomersInfiniteQuery(params: UseCustomersInfiniteQueryParams) {
-  return useInfiniteQuery<CustomerListResponse>({
+  return useInfiniteQuery({
     queryKey: [
       'customers',
       {
@@ -21,6 +21,7 @@ export function useCustomersInfiniteQuery(params: UseCustomersInfiniteQueryParam
         to: params.to,
       },
     ],
+
     queryFn: ({ pageParam }) =>
       getCustomers({
         sortBy: params.sortBy,
@@ -31,11 +32,15 @@ export function useCustomersInfiniteQuery(params: UseCustomersInfiniteQueryParam
         to: params.to === '' ? params.from : params.to,
       }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (lastPage.pagination.hasNext) {
-        return lastPage.pagination.page + 1
+    getNextPageParam: (lastPage) => (lastPage.pagination.hasNext ? lastPage.pagination.page + 1 : undefined),
+    select: (data) => {
+      const rows = data.pages.flatMap((page) => page.data)
+      const lastPagination = data.pages[data.pages.length - 1]?.pagination
+
+      return {
+        rows,
+        pagination: lastPagination,
       }
-      return undefined
     },
   })
 }
