@@ -76,8 +76,13 @@ function ConsumerListSection() {
   }
 
   const { data: customerPurchasesData } = useQuery({
-    queryKey: ['customer-purchases', customerId],
-    queryFn: () => getCustomerPurchases(customerId!),
+    queryKey: ['customer-purchases', customerId, dateRange.start, dateRange.end],
+    queryFn: () =>
+      getCustomerPurchases({
+        customerId: customerId!,
+        from: dateRange.start,
+        to: dateRange.end === '' ? dateRange.start : dateRange.end,
+      }),
     enabled: !!customerId,
   })
 

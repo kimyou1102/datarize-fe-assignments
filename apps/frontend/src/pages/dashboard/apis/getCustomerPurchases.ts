@@ -8,8 +8,22 @@ interface CustomerPurchaseItem {
   imgSrc: string
 }
 
-export async function getCustomerPurchases(customerId: number): Promise<CustomerPurchaseItem[]> {
+interface getCustomerPurchasesParams {
+  customerId: number
+  from: string
+  to: string
+}
+
+export async function getCustomerPurchases({
+  customerId,
+  from,
+  to,
+}: getCustomerPurchasesParams): Promise<CustomerPurchaseItem[]> {
   return client.get<CustomerPurchaseItem[]>({
     url: `/api/customers/${customerId}/purchases`,
+    params: {
+      from,
+      to,
+    },
   })
 }
