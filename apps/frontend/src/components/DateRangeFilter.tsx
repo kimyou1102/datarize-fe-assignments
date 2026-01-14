@@ -1,4 +1,4 @@
-import DatePicker from '@/pages/dashboard/components/DatePicker'
+import DatePicker from '@/components/DatePicker'
 import styled from '@emotion/styled'
 
 export type DateRangeValue = {
