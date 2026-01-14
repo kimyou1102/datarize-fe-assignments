@@ -6,11 +6,15 @@ import { useCustomersQuery } from '@/pages/hooks/useCustomersQuery'
 import Pagination from './Pagination'
 import Modal from '@/components/Modal'
 import PurchaseItemTable from './PurchaseItemsTable'
+import { useQuery } from '@tanstack/react-query'
+import { getCustomerPurchases } from '../apis/getCustomerPurchases'
 
 function ConsumerListSection() {
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
   const [isOpen, setIsOpen] = useState(false)
+  const [customerId, setCustomerId] = useState<number | null>(null)
+  const [modalTitle, setModalTitle] = useState('')
 
   const handleChangeStartDate = (date: string) => {
     setDateRange((prev) => ({ ...prev, start: date }))
@@ -65,9 +69,17 @@ function ConsumerListSection() {
     setIsOpen(false)
   }
 
-  const handleRowClick = (id: number) => {
+  const handleRowClick = (id: number, title: string) => {
     setIsOpen(true)
+    setCustomerId(id)
+    setModalTitle(title)
   }
+
+  const { data: customerPurchasesData } = useQuery({
+    queryKey: ['customer-purchases', customerId],
+    queryFn: () => getCustomerPurchases(customerId!),
+    enabled: !!customerId,
+  })
 
   return (
     <S_Container>
@@ -86,18 +98,8 @@ function ConsumerListSection() {
         onItemClick={handleRowClick}
       />
       <Pagination page={currentPage} totalPages={totalPages} onPrev={handlePrevClick} onNext={handleNextClick} />
-      <Modal isOpen={isOpen} title="" onClose={handleCloseClick}>
-        <PurchaseItemTable
-          rows={[
-            {
-              date: '2025-10-07',
-              quantity: 1,
-              product: '네이비 맨투맨',
-              price: 31000, // 제품 단가
-              imgSrc: 'http://localhost:4000/imgs/sweatshirt.jpg',
-            },
-          ]}
-        />
+      <Modal isOpen={isOpen} title={modalTitle} onClose={handleCloseClick}>
+        <PurchaseItemTable rows={customerPurchasesData ?? []} />
       </Modal>
     </S_Container>
   )
