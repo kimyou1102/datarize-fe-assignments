@@ -43,20 +43,27 @@ const S_DatePickersWrapper = styled.div`
 `
 
 const S_ResetButton = styled.button`
-  border: 0;
-  background: transparent;
-  padding: 10px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
   color: #111827;
   font-weight: 600;
   cursor: pointer;
 
   &:hover {
-    text-decoration: underline;
+    background: #f9fafb;
+  }
+
+  &:active {
+    background: #f3f4f6;
   }
 
   &:focus-visible {
     outline: 2px solid #2563eb;
     outline-offset: 2px;
-    border-radius: 8px;
   }
 `
