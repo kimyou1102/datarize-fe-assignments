@@ -2,7 +2,8 @@ import styled from '@emotion/styled'
 import ConsumerListToolbar from './ConsumerListToolbar'
 import { ChangeEvent, useState } from 'react'
 import CustomerPurchaseTable from './CustomerPurchaseTable'
-import { useCustomersInfiniteQuery } from '@/pages/hooks/useCustomersInfiniteQuery'
+import { useCustomersQuery } from '@/pages/hooks/useCustomersQuery'
+import Pagination from './Pagination'
 
 function ConsumerListSection() {
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
@@ -30,15 +31,32 @@ function ConsumerListSection() {
     setKeyword(e.target.value)
   }
 
-  const { data } = useCustomersInfiniteQuery({
+  const [page, setPage] = useState(1)
+
+  const { data } = useCustomersQuery({
     sortBy: sortDirection,
     name: keyword,
-    limit: 20,
+    limit: 10,
     from: dateRange.start,
     to: dateRange.end,
+    page,
   })
 
-  const rows = data?.rows ?? []
+  const rows = data?.data ?? []
+  const currentPage = data?.pagination.page ?? 1
+  const totalPages = data?.pagination.totalPages ?? 1
+
+  const handleNextClick = () => {
+    if (totalPages > page) {
+      setPage((prev) => prev + 1)
+    }
+  }
+
+  const handlePrevClick = () => {
+    if (page > 0) {
+      setPage((prev) => prev - 1)
+    }
+  }
 
   return (
     <S_Container>
@@ -55,6 +73,7 @@ function ConsumerListSection() {
         sortDirection={sortDirection}
         onClickSortTotalAmount={handleClickSortTotalAmount}
       />
+      <Pagination page={currentPage} totalPages={totalPages} onPrev={handlePrevClick} onNext={handleNextClick} />
     </S_Container>
   )
 }
