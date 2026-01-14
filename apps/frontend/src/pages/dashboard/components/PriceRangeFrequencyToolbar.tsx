@@ -40,12 +40,15 @@ function PriceRangeFrequencyToolbar({
 
 export default PriceRangeFrequencyToolbar
 
-const S_Card = styled.section`
+const S_Card = styled.div`
   width: 100%;
   padding: 20px 24px;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `
 
 const S_TopRow = styled.div`
