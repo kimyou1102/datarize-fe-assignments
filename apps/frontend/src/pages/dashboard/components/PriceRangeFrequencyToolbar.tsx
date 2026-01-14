@@ -88,14 +88,3 @@ const S_Button = styled.button`
     outline-offset: 2px;
   }
 `
-
-const S_BottomRow = styled.div`
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-`
-
-const S_DatePickersWrapper = styled.div`
-  display: flex;
-`
