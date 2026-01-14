@@ -5,6 +5,9 @@ import PriceRangeFrequencyTable from './PriceRangeFrequencyTable'
 import { formatPriceRangeFrequencyRows } from '@/utils/formatPriceRangeFrequencyRows'
 import { useQuery } from '@tanstack/react-query'
 import { getPurchaseFrequency } from '../apis/getPurchaseFrequency'
+import { useQueryClient } from '@tanstack/react-query'
+import { getPurchases } from '../apis/getPurchases'
+import { downloadPurchaseCsv } from '@/utils/purchageCsv'
 
 function PriceRangeFrequencySection() {
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
@@ -21,9 +24,26 @@ function PriceRangeFrequencySection() {
     setDateRange({ start: '', end: '' })
   }
 
-  const handleDownloadCsv = () => {}
+  const queryClient = useQueryClient()
 
-  const { data } = useQuery({
+  const handleDownloadCsv = async () => {
+    if (!dateRange.start) {
+      alert('날짜를 선택해주세요.')
+      return
+    }
+
+    const from = dateRange.start
+    const to = dateRange.end === '' ? dateRange.start : dateRange.end
+
+    const data = await queryClient.fetchQuery({
+      queryKey: ['purchases', from, to],
+      queryFn: () => getPurchases({ from, to }),
+    })
+
+    downloadPurchaseCsv(data, `purchase_${from}_${to}.csv`)
+  }
+
+  const { data: purchaseFrequencyData } = useQuery({
     queryKey: ['purchase-frequency', dateRange.start, dateRange.end ?? dateRange.start],
     queryFn: () =>
       getPurchaseFrequency({
@@ -42,7 +62,9 @@ function PriceRangeFrequencySection() {
         onReset={handleReset}
         onDownloadCsv={handleDownloadCsv}
       />
-      <PriceRangeFrequencyTable rows={data ? formatPriceRangeFrequencyRows(data) : []} />
+      <PriceRangeFrequencyTable
+        rows={purchaseFrequencyData ? formatPriceRangeFrequencyRows(purchaseFrequencyData) : []}
+      />
     </S_Container>
   )
 }
