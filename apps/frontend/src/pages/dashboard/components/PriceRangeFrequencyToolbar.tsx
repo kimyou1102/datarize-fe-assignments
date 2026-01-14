@@ -24,9 +24,9 @@ function PriceRangeFrequencyToolbar({
       <S_TopRow>
         <S_Title>가격대별 구매 빈도</S_Title>
 
-        <S_CsvButton type="button" onClick={onDownloadCsv}>
+        <S_Button type="button" onClick={onDownloadCsv}>
           CSV 다운로드
-        </S_CsvButton>
+        </S_Button>
       </S_TopRow>
 
       <S_BottomRow>
@@ -35,9 +35,9 @@ function PriceRangeFrequencyToolbar({
           <DatePicker value={dateRange.end} onDateChange={onChangeEndDate} min={dateRange.start || undefined} />
         </S_DatePickersWrapper>
 
-        <S_ResetButton type="button" onClick={onReset}>
+        <S_Button type="button" onClick={onReset}>
           초기화
-        </S_ResetButton>
+        </S_Button>
       </S_BottomRow>
     </S_Card>
   )
@@ -68,7 +68,7 @@ const S_Title = styled.h2`
   color: #111827;
 `
 
-const S_CsvButton = styled.button`
+const S_Button = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -103,23 +103,4 @@ const S_BottomRow = styled.div`
 
 const S_DatePickersWrapper = styled.div`
   display: flex;
-`
-
-const S_ResetButton = styled.button`
-  border: 0;
-  background: transparent;
-  padding: 10px 6px;
-  color: #111827;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-    border-radius: 8px;
-  }
 `
