@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import DatePicker from './DatePicker'
+import DateRangeFilter from '@/components/DateRangeFilter'
 
 interface PriceRangeFrequencyToolbarProps {
   dateRange: {
@@ -28,17 +28,12 @@ function PriceRangeFrequencyToolbar({
           CSV 다운로드
         </S_Button>
       </S_TopRow>
-
-      <S_BottomRow>
-        <S_DatePickersWrapper>
-          <DatePicker value={dateRange.start} onDateChange={onChangeStartDate} max={dateRange.end || undefined} />
-          <DatePicker value={dateRange.end} onDateChange={onChangeEndDate} min={dateRange.start || undefined} />
-        </S_DatePickersWrapper>
-
-        <S_Button type="button" onClick={onReset}>
-          초기화
-        </S_Button>
-      </S_BottomRow>
+      <DateRangeFilter
+        value={dateRange}
+        onChangeStartDate={onChangeStartDate}
+        onChangeEndDate={onChangeEndDate}
+        onReset={onReset}
+      />
     </S_Card>
   )
 }
