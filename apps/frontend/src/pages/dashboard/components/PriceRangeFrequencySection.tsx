@@ -17,7 +17,9 @@ function PriceRangeFrequencySection() {
     setDateRange((prev) => ({ ...prev, end: date }))
   }
 
-  const handleReset = () => {}
+  const handleReset = () => {
+    setDateRange({ start: '', end: '' })
+  }
 
   const handleDownloadCsv = () => {}
 
