@@ -31,8 +31,8 @@ function PriceRangeFrequencyToolbar({
 
       <S_BottomRow>
         <S_DatePickersWrapper>
-          <DatePicker value={dateRange.start} onDateChange={onChangeStartDate} />
-          <DatePicker value={dateRange.end} onDateChange={onChangeEndDate} />
+          <DatePicker value={dateRange.start} onDateChange={onChangeStartDate} max={dateRange.end || undefined} />
+          <DatePicker value={dateRange.end} onDateChange={onChangeEndDate} min={dateRange.start || undefined} />
         </S_DatePickersWrapper>
 
         <S_ResetButton type="button" onClick={onReset}>

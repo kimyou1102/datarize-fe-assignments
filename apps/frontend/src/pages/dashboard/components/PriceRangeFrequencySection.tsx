@@ -5,9 +5,13 @@ import PriceRangeFrequencyToolbar from './PriceRangeFrequencyToolbar'
 function PriceRangeFrequencySection() {
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
 
-  const handleChangeStartDate = (date: string) => {}
+  const handleChangeStartDate = (date: string) => {
+    setDateRange((prev) => ({ ...prev, start: date }))
+  }
 
-  const handleChangeEndDate = (date: string) => {}
+  const handleChangeEndDate = (date: string) => {
+    setDateRange((prev) => ({ ...prev, end: date }))
+  }
 
   const handleReset = () => {}
 
