@@ -15,6 +15,8 @@ function ConsumerListSection() {
   const [isOpen, setIsOpen] = useState(false)
   const [customerId, setCustomerId] = useState<number | null>(null)
   const [modalTitle, setModalTitle] = useState('')
+  const [keyword, setKeyword] = useState('')
+  const [page, setPage] = useState(1)
 
   const handleChangeStartDate = (date: string) => {
     setDateRange((prev) => ({ ...prev, start: date }))
@@ -32,13 +34,9 @@ function ConsumerListSection() {
     setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
   }
 
-  const [keyword, setKeyword] = useState('')
-
   const handleKeywordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
-
-  const [page, setPage] = useState(1)
 
   const { data } = useCustomersQuery({
     sortBy: sortDirection,
@@ -47,6 +45,17 @@ function ConsumerListSection() {
     from: dateRange.start,
     to: dateRange.end,
     page,
+  })
+
+  const { data: customerPurchasesData } = useQuery({
+    queryKey: ['customer-purchases', customerId, dateRange.start, dateRange.end],
+    queryFn: () =>
+      getCustomerPurchases({
+        customerId: customerId!,
+        from: dateRange.start,
+        to: dateRange.end === '' ? dateRange.start : dateRange.end,
+      }),
+    enabled: !!customerId,
   })
 
   const rows = data?.data ?? []
@@ -74,17 +83,6 @@ function ConsumerListSection() {
     setCustomerId(id)
     setModalTitle(title)
   }
-
-  const { data: customerPurchasesData } = useQuery({
-    queryKey: ['customer-purchases', customerId, dateRange.start, dateRange.end],
-    queryFn: () =>
-      getCustomerPurchases({
-        customerId: customerId!,
-        from: dateRange.start,
-        to: dateRange.end === '' ? dateRange.start : dateRange.end,
-      }),
-    enabled: !!customerId,
-  })
 
   return (
     <S_Container>
