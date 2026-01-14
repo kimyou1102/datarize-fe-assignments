@@ -70,4 +70,7 @@ function PriceRangeFrequencySection() {
 }
 
 export default PriceRangeFrequencySection
-const S_Container = styled.section``
+
+const S_Container = styled.section`
+  width: 100%;
+`
