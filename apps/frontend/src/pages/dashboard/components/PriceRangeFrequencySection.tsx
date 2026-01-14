@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import PriceRangeFrequencyToolbar from './PriceRangeFrequencyToolbar'
+import PriceRangeFrequencyTable from './PriceRangeFrequencyTable'
+import { formatPriceRangeFrequencyRows } from '@/utils/formatPriceRangeFrequencyRows'
 
 function PriceRangeFrequencySection() {
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
@@ -17,6 +19,14 @@ function PriceRangeFrequencySection() {
 
   const handleDownloadCsv = () => {}
 
+  const dummy = [
+    { range: '0 - 20000', count: 150 },
+    { range: '20001 - 30000', count: 120 },
+    { range: '100001 - Infinity', count: 120 },
+  ]
+
+  const rows = formatPriceRangeFrequencyRows(dummy)
+
   return (
     <S_Container>
       <PriceRangeFrequencyToolbar
@@ -26,6 +36,7 @@ function PriceRangeFrequencySection() {
         onReset={handleReset}
         onDownloadCsv={handleDownloadCsv}
       />
+      <PriceRangeFrequencyTable rows={rows} />
     </S_Container>
   )
 }
