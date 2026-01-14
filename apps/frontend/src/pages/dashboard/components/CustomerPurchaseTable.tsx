@@ -12,9 +12,15 @@ export interface CustomerPurchaseTableProps {
   rows: CustomerSummary[]
   sortDirection: SortBy
   onClickSortTotalAmount: () => void
+  onItemClick: (id: number) => void
 }
 
-function CustomerPurchaseTable({ rows, sortDirection, onClickSortTotalAmount }: CustomerPurchaseTableProps) {
+function CustomerPurchaseTable({
+  rows,
+  sortDirection,
+  onClickSortTotalAmount,
+  onItemClick,
+}: CustomerPurchaseTableProps) {
   return (
     <S_TableCard>
       <S_Table>
@@ -34,7 +40,7 @@ function CustomerPurchaseTable({ rows, sortDirection, onClickSortTotalAmount }: 
 
         <tbody>
           {rows.map((row) => (
-            <S_BodyRow key={row.id}>
+            <S_BodyRow key={row.id} onClick={() => onItemClick(row.id)}>
               <S_Td align="left">{row.id}</S_Td>
               <S_Td align="left">
                 <S_Name>{row.name}</S_Name>
