@@ -1,7 +1,7 @@
 import DateRangeFilter from '@/components/DateRangeFilter'
 import SearchInput from '@/components/Input'
 import styled from '@emotion/styled'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import SearchIcon from './SearchIcon'
 
 interface ConsumerListToolbarProps {
@@ -9,17 +9,21 @@ interface ConsumerListToolbarProps {
     start: string
     end: string
   }
+  keyword: string
+  onKeywordChange: (e: ChangeEvent<HTMLInputElement>) => void
   onChangeStartDate: (value: string) => void
   onChangeEndDate: (value: string) => void
   onReset: () => void
 }
 
-function ConsumerListToolbar({ dateRange, onChangeStartDate, onChangeEndDate, onReset }: ConsumerListToolbarProps) {
-  const [keyword, setKeyword] = useState('')
-
-  const handleKeywordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value)
-  }
+function ConsumerListToolbar({
+  dateRange,
+  keyword,
+  onKeywordChange,
+  onChangeStartDate,
+  onChangeEndDate,
+  onReset,
+}: ConsumerListToolbarProps) {
   return (
     <S_Card>
       <S_TopRow>
@@ -31,12 +35,7 @@ function ConsumerListToolbar({ dateRange, onChangeStartDate, onChangeEndDate, on
         onChangeEndDate={onChangeEndDate}
         onReset={onReset}
       />
-      <SearchInput
-        value={keyword}
-        onChange={handleKeywordChange}
-        placeholder="이름으로 검색..."
-        icon={<SearchIcon />}
-      />
+      <SearchInput value={keyword} onChange={onKeywordChange} placeholder="이름으로 검색..." icon={<SearchIcon />} />
     </S_Card>
   )
 }
