@@ -1,14 +1,15 @@
 import styled from '@emotion/styled'
+import { ComponentPropsWithRef } from 'react'
 
 interface DatePickerInputProps {
   value: string
   onDateChange: (value: string) => void
 }
 
-function DatePicker({ value, onDateChange }: DatePickerInputProps) {
+function DatePicker({ value, onDateChange, ...rest }: ComponentPropsWithRef<'input'> & DatePickerInputProps) {
   return (
     <S_Wrapper>
-      <S_Input type="date" value={value} onChange={(e) => onDateChange(e.target.value)} placeholder="시작년월" />
+      <S_Input type="date" value={value} onChange={(e) => onDateChange(e.target.value)} {...rest} />
     </S_Wrapper>
   )
 }
