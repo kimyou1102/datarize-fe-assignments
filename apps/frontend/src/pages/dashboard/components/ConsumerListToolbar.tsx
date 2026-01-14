@@ -2,7 +2,7 @@ import DateRangeFilter from '@/components/DateRangeFilter'
 import SearchInput from '@/components/Input'
 import styled from '@emotion/styled'
 import { ChangeEvent } from 'react'
-import SearchIcon from './SearchIcon'
+import SearchIcon from '../../../components/icon/SearchIcon'
 
 interface ConsumerListToolbarProps {
   dateRange: {
